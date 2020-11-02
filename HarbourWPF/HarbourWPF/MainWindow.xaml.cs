@@ -14,10 +14,11 @@ namespace HarbourWPF
         public MainWindow()
         {
             InitializeComponent();
+        }
 
+        private void NextDayButton_Click(object sender, RoutedEventArgs e)
+        {
             var fileText = File.ReadLines("BoatsInDock1.txt", System.Text.Encoding.UTF7);
-
-            //Console.WriteLine(Utils.PrintTextFromFile(fileText));
 
             HarbourSpace[] dock1 = new HarbourSpace[32];
             for (int i = 0; i < dock1.Length; i++)
@@ -33,67 +34,28 @@ namespace HarbourWPF
             {
                 dock2[i] = new HarbourSpace(i);
             }
-
             AddBoatsFromFileToHarbour(fileText, dock2);
 
-            startUpBoatsListBox.Items.Add($"Båtar i hamn efter uppstart\nKaj 1\n=====\n" +
-                $"{CreateHarbourTable(dock1)}\nKaj 2\n=====\n{CreateHarbourTable(dock2)}");
-
-            startUpBoatsListBox.Items.Clear();
-            startUpBoatsListBox.Items.Add("Båtar i hamn efter uppstart");
-            startUpBoatsListBox.Items.Add("Kaj 1");
-            List<string> dock1Table = CreateHarbourTable(dock1);
-            foreach (var line in dock1Table)
-            {
-                startUpBoatsListBox.Items.Add(line);
-            }
-            startUpBoatsListBox.Items.Add("\n");
-            startUpBoatsListBox.Items.Add("Kaj 2");
-            List<string> dock2Table = (CreateHarbourTable(dock2));
-            foreach (var line in dock2Table)
-            {
-                startUpBoatsListBox.Items.Add(line);
-            }
+            //startUpBoatsListBox.Items.Add($"Båtar i hamn efter uppstart\nKaj 1\n=====\n" +
+            //   $"{CreateHarbourTable(dock1)}\nKaj 2\n=====\n{CreateHarbourTable(dock2)}");
+            //startUpBoatsListBox.Items.Clear();
+            //startUpBoatsListBox.Items.Add("Båtar i hamn efter uppstart");
+            //startUpBoatsListBox.Items.Add("Kaj 1");
+            //List<string> dock1Table = CreateHarbourTable(dock1);
+            //foreach (var line in dock1Table)
+            //{
+            //    startUpBoatsListBox.Items.Add(line);
+            //}
+            //startUpBoatsListBox.Items.Add("\n");
+            //startUpBoatsListBox.Items.Add("Kaj 2");
+            //List<string> dock2Table = (CreateHarbourTable(dock2));
+            //foreach (var line in dock2Table)
+            //{
+            //    startUpBoatsListBox.Items.Add(line);
+            //}
 
             List<Boat> boatsInDock1 = GenerateBoatsInHarbourList(dock1);
             List<Boat> boatsInDock2 = GenerateBoatsInHarbourList(dock2);
-
-            nextDayButton.Click += delegate (object sender, RoutedEventArgs e)
-            { NextDayButton_Click(sender, e, dock1, dock2, boatsInDock1, boatsInDock2); };
-
-            exitButton.Click += delegate (object sender, RoutedEventArgs e)
-            { ExitButton_Click(sender, e, dock1, dock2); };
-
-        }
-        private void ExitButton_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void ExitButton_Click(object sender, RoutedEventArgs e, HarbourSpace[] dock1, HarbourSpace[] dock2)
-        {
-            StreamWriter sw1 = new StreamWriter("BoatsInDock1.txt", false, System.Text.Encoding.UTF7);
-            SaveToFile(sw1, dock1);
-            sw1.Close();
-
-            StreamWriter sw2 = new StreamWriter("BoatsInDock2.txt", false, System.Text.Encoding.UTF7);
-            SaveToFile(sw2, dock2);
-            sw2.Close();
-
-
-        }
-
-
-        private void NextDayButton_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void NextDayButton_Click(object sender, RoutedEventArgs e,
-            HarbourSpace[] dock1, HarbourSpace[] dock2, List<Boat> boatsInDock1, List<Boat> boatsInDock2)
-        {
-            AddDayToDaysSinceArrival(boatsInDock1);
-            AddDayToDaysSinceArrival(boatsInDock2);
 
             bool boatRemoved = true;
             while (boatRemoved)
@@ -105,22 +67,22 @@ namespace HarbourWPF
             {
                 boatRemoved = RemoveBoats(dock2);
             }
-           
-            boatsAfterDepartureListBox.Items.Clear();
-            boatsAfterDepartureListBox.Items.Add("Båtar i hamn efter dagens avfärder");
-            boatsAfterDepartureListBox.Items.Add("Kaj 1");
-            List<string> dock1Table = CreateHarbourTable(dock1);
-            foreach (var line in dock1Table)
-            {
-                boatsAfterDepartureListBox.Items.Add(line);
-            }
-            boatsAfterDepartureListBox.Items.Add("\n");
-            boatsAfterDepartureListBox.Items.Add("Kaj 2");
-            List<string> dock2Table = (CreateHarbourTable(dock2));
-            foreach (var line in dock2Table)
-            {
-                boatsAfterDepartureListBox.Items.Add(line);
-            }
+
+            //boatsAfterDepartureListBox.Items.Clear();
+            //boatsAfterDepartureListBox.Items.Add("Båtar i hamn efter dagens avfärder");
+            //boatsAfterDepartureListBox.Items.Add("Kaj 1");
+            //dock1Table = CreateHarbourTable(dock1);
+            //foreach (var line in dock1Table)
+            //{
+            //    boatsAfterDepartureListBox.Items.Add(line);
+            //}
+            //boatsAfterDepartureListBox.Items.Add("\n");
+            //boatsAfterDepartureListBox.Items.Add("Kaj 2");
+            //dock2Table = (CreateHarbourTable(dock2));
+            //foreach (var line in dock2Table)
+            //{
+            //    boatsAfterDepartureListBox.Items.Add(line);
+            //}
 
             int rejectedRowingBoats = 0;
             int rejectedMotorBoats = 0;
@@ -129,29 +91,18 @@ namespace HarbourWPF
             int rejectedCargoShips = 0;
 
             List<Boat> arrivingBoats = new List<Boat>();
-            int NumberOfArrivingBoats = 5;
+            int NumberOfArrivingBoats = 10;
 
             CreateNewBoats(arrivingBoats, NumberOfArrivingBoats); // Tar bor tillfälligt, för att kunna styra vilka båtar som läggs till
 
-            //    //        // Skapar båtar för test, ta bort sedan
-            //    //arrivingBoats.Add(new MotorBoat("M-" + Boat.GenerateID(), 10, 2, 3, 0, 4));
-            //    //arrivingBoats.Add(new RowingBoat("R-" + Boat.GenerateID(), 10, 2, 1, 0, 4));
-            //    //arrivingBoats.Add(new SailingBoat("S-" + Boat.GenerateID(), 10, 2, 4, 0, 4));
-            //    //arrivingBoats.Add(new CargoShip("L-" + Boat.GenerateID(), 10, 2, 6, 0, 4));
-            //    //arrivingBoats.Add(new RowingBoat("R-" + Boat.GenerateID(), 10, 2, 1, 0, 4));
-            //    //arrivingBoats.Add(new Catamaran("K-" + Boat.GenerateID(), 10, 2, 1, 0, 4));
+            // Skapar båtar för test, ta bort sedan
+            //arrivingBoats.Add(new MotorBoat("M-" + Boat.GenerateID(), 10, 2, 3, 0, 4));
+            //arrivingBoats.Add(new RowingBoat("R-" + Boat.GenerateID(), 10, 2, 1, 0, 4));
+            //arrivingBoats.Add(new SailingBoat("S-" + Boat.GenerateID(), 10, 2, 4, 0, 4));
+            //arrivingBoats.Add(new CargoShip("L-" + Boat.GenerateID(), 10, 2, 6, 0, 4));
+            //arrivingBoats.Add(new RowingBoat("R-" + Boat.GenerateID(), 10, 2, 1, 0, 4));
+            //arrivingBoats.Add(new Catamaran("K-" + Boat.GenerateID(), 10, 2, 1, 0, 4));
 
-            //    Console.WriteLine("Anländande båtar");
-            //    Console.WriteLine("----------------");
-            //    Console.WriteLine("Båttyp\t\tID\tVikt\tMaxhastighet\tÖvrigt\n" +
-            //                       "      \t\t  \t(kg)\t(km/h)\n" +
-            //                       "----------\t-----\t-----\t------------\t------------------------------\n");
-            //    foreach (var boat in arrivingBoats)  //Kontroll, ta bort sedan
-            //    {
-            //        Console.WriteLine($"{boat}");
-            //    }
-            //    Console.WriteLine();
-            //    Console.WriteLine();
 
             foreach (var boat in arrivingBoats)
             {
@@ -208,50 +159,84 @@ namespace HarbourWPF
                 }
             }
 
-            //    Console.WriteLine("Båtar i hamn vid dagens slut\n----------------------------\n");
-            //    Console.WriteLine("Kaj 1");
-            //    Console.WriteLine(PrintHarbour(dock1));
-            //    Console.WriteLine();
-            //    Console.WriteLine("Kaj 2");
-            //    Console.WriteLine(PrintHarbour(dock2));
-            //    Console.WriteLine();
-            //    Console.WriteLine();
+            boatsInHarbourListBox.Items.Clear();
+            boatsInHarbourListBox.Items.Add("Båtar i hamn vid dagens slut\n----------------------------");
+            boatsInHarbourListBox.Items.Add("Kaj 1");
+            List<string> dock1EndOfDayTable = CreateHarbourTable(dock1);
+            foreach (var line in dock1EndOfDayTable)
+            {
+                boatsInHarbourListBox.Items.Add(line);
+            }
+            boatsInHarbourListBox.Items.Add("\n");
+            boatsInHarbourListBox.Items.Add("Kaj 2");
+            List<string> dock2EndOfDayTable = CreateHarbourTable(dock2);
+            foreach (var line in dock2EndOfDayTable)
+            {
+                boatsInHarbourListBox.Items.Add(line);
+            }
 
             //    // GenerateBoatsInHarbour skapar ny båtlista som används för statistik
-            //    // och i början av loopen While (true) där ny dag börjar
+            //    // och för att addera dagar innan saveToFile
             boatsInDock1 = GenerateBoatsInHarbourList(dock1);
             boatsInDock2 = GenerateBoatsInHarbourList(dock2);
 
             var boatsInBothDocks = boatsInDock1
                 .Concat(boatsInDock2);
 
-            //    Console.WriteLine(GnerateSummaryOfBoats(boatsInBothDocks));
+            List<string> summaryOfBoats = GenerateSummaryOfBoats(boatsInBothDocks);
+
+            summaryListBox.Items.Clear();
+            foreach (var line in summaryOfBoats)
+            {
+                summaryListBox.Items.Add(line);
+            }
+
+            summaryListBox.Items.Add("");
 
             int sumOfWeight = GenerateSumOfWeight(boatsInBothDocks);
             double averageSpeed = GenerateAverageSpeed(boatsInBothDocks);
             int availableSpacesDock1 = CountAvailableSpaces(dock1);
             int availableSpacesDock2 = CountAvailableSpaces(dock2);
 
-            //    Console.WriteLine(PrintStatistics(sumOfWeight, averageSpeed, availableSpacesDock1, availableSpacesDock2,
-            //        rejectedRowingBoats, rejectedMotorBoats, rejectedSailingBoats, rejectedCatamarans, rejectedCargoShips));
+            List<string> statistics = GenerateStatisticsList(sumOfWeight, averageSpeed, availableSpacesDock1, availableSpacesDock2,
+                rejectedRowingBoats, rejectedMotorBoats, rejectedSailingBoats, rejectedCatamarans, rejectedCargoShips);
 
+            foreach (var line in statistics)
+            {
+                summaryListBox.Items.Add(line);
+            }
+
+            AddDayToDaysSinceArrival(boatsInDock1);
+            AddDayToDaysSinceArrival(boatsInDock2);
+
+            StreamWriter sw1 = new StreamWriter("BoatsInDock1.txt", false, System.Text.Encoding.UTF7);
+            SaveToFile(sw1, dock1);
+            sw1.Close();
+
+            StreamWriter sw2 = new StreamWriter("BoatsInDock2.txt", false, System.Text.Encoding.UTF7);
+            SaveToFile(sw2, dock2);
+            sw2.Close();
         }
-
-        private static string PrintStatistics(int sumOfWeight, double averageSpeed, int availableSpacesDock1, int availableSpacesDock2,
+       
+        private static List<string> GenerateStatisticsList(int sumOfWeight, double averageSpeed, int availableSpacesDock1, int availableSpacesDock2,
             int rejectedRowingBoats, int rejectedMotorBoats, int rejectedSailingBoats, int rejectedCatamarans, int rejectedCargoShips)
         {
-            return $"Statistik\n---------\n" +
-                $"Total båtvikt i hamn:\t\t{sumOfWeight} kg\n" +
-                $"Medel av maxhastighet:\t\t{Math.Round(Utils.ConvertKnotToKmPerHour(averageSpeed), 1)} km/h\n" +
-                $"Lediga platser vid kaj 1:\t{availableSpacesDock1} st\n" +
-                $"Lediga platser vid kaj 2:\t{availableSpacesDock2} st\n\n" +
-                $"Avvisade båtar:\n" +
-                $"\tRoddbåtar\t{rejectedRowingBoats} st\n" +
-                $"\tMotorbåtar\t{rejectedMotorBoats} st\n" +
-                $"\tSegelbåtar\t{rejectedSailingBoats} st\n" +
-                $"\tKatamaraner\t{rejectedCatamarans} st\n" +
-                $"\tLastfartyg\t{rejectedCargoShips} st\n" +
-                $"\tTotalt\t\t{rejectedRowingBoats + rejectedMotorBoats + rejectedSailingBoats + rejectedCatamarans + rejectedCargoShips} st";
+            List<string> statistics = new List<string>();
+
+            statistics.Add("Statistik\n---------");
+            statistics.Add($"Total båtvikt i hamn:\t{sumOfWeight} kg");
+            statistics.Add($"Medel av maxhastighet:\t{Math.Round(Utils.ConvertKnotToKmPerHour(averageSpeed), 1)} km/h");
+            statistics.Add($"Lediga platser vid kaj 1:\t{availableSpacesDock1} st");
+            statistics.Add($"Lediga platser vid kaj 2:\t{availableSpacesDock2} st\n");
+            statistics.Add("Avvisade båtar idag:");
+            statistics.Add($"\tRoddbåtar\t{rejectedRowingBoats} st");
+            statistics.Add($"\tMotorbåtar\t{rejectedMotorBoats} st");
+            statistics.Add($"\tSegelbåtar\t{rejectedSailingBoats} st");
+            statistics.Add($"\tKatamaraner\t{rejectedCatamarans} st");
+            statistics.Add($"\tLastfartyg\t{rejectedCargoShips} st");
+            statistics.Add($"\tTotalt\t\t{rejectedRowingBoats + rejectedMotorBoats + rejectedSailingBoats + rejectedCatamarans + rejectedCargoShips} st");
+
+            return statistics;
         }
 
         private static int CountAvailableSpaces(HarbourSpace[] dock)
@@ -280,9 +265,11 @@ namespace HarbourWPF
             return q;
         }
 
-        private static string GnerateSummaryOfBoats(IEnumerable<Boat> boatsInHarbour)
+        private static List<string> GenerateSummaryOfBoats(IEnumerable<Boat> boatsInHarbour)
         {
-            string summaryOfBoats = "Summering av båtar i hamn\n-------------------------\n";
+            List<string> summaryOfBoats = new List<string>();
+
+            summaryOfBoats.Add("Summering av båtar i hamn\n-------------------------");
 
             var q = boatsInHarbour
                 .GroupBy(b => b.Type)
@@ -290,7 +277,7 @@ namespace HarbourWPF
 
             foreach (var group in q)
             {
-                summaryOfBoats += $"{group.Key}:\t{group.Count()} st\n";
+                summaryOfBoats.Add($"{group.Key}:  \t{group.Count()} st");
             }
 
             return summaryOfBoats;
@@ -365,21 +352,25 @@ namespace HarbourWPF
         {
             List<string> text = new List<string>();
 
-            text.Add("Båtplats\tBåttyp\t\tID\tVikt\tMaxhastighet\tÖvrigt\n" +
+            text.Add("Båtplats\tBåttyp\t\tID\tVikt\tMaxfart\tÖvrigt\n" +
                       "        \t      \t\t  \t(kg)\t(km/h)\n" +
-                      "--------\t----------\t-----\t-----\t------------\t------------------------------");            
-            
+                      "--------\t----------\t-----\t-----\t-------\t------------------------------");
+
 
             foreach (var space in dock)
             {
                 if (space.ParkedBoats.Count() == 0)
                 {
-
-                    text.Add($"{space.SpaceId + 1}  Ledigt");
+                    text.Add($"{space.SpaceId + 1}\tLedigt");
                 }
                 foreach (var boat in space.ParkedBoats)
                 {
-                    if (space.SpaceId > 0 && dock[space.SpaceId - 1].ParkedBoats.Contains(boat) == false)
+                    if (space.SpaceId > 0 && dock[space.SpaceId - 1].ParkedBoats.Contains(boat))
+                    {
+                       // Samma båt som på space innan -> skriv ingenting
+                    }
+
+                    else
                     {
                         if (boat is RowingBoat || boat is MotorBoat)
                         {

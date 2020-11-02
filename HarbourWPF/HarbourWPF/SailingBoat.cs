@@ -19,8 +19,8 @@ namespace HarbourWPF
 
         public override string ToString()
         {
-            return $"{Type}\t\t{IdNumber}\t{Weight}\t{Math.Round(Utils.ConvertKnotToKmPerHour(MaximumSpeed), 0)}\t\t" +
-                $"Längd:\t\t{Math.Round(Utils.ConvertFeetToMeter(Length))} meter";
+            return $"{Type}\t\t{IdNumber}\t{Weight}\t{Math.Round(Utils.ConvertKnotToKmPerHour(MaximumSpeed), 0)}" +
+                $"\tLängd:\t\t{Math.Round(Utils.ConvertFeetToMeter(Length))} meter";
         }
         public override string TextToFile(int index)
         {

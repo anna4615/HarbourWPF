@@ -20,7 +20,7 @@ namespace HarbourWPF
         public override string ToString()
         {
             return $"{Type}\t{IdNumber}\t{Weight}\t{Math.Round(Utils.ConvertKnotToKmPerHour(MaximumSpeed), 0)}" +
-                $"\t\tMotoreffekt:\t{Power} hästkrafter";
+                $"\tMotoreffekt:\t{Power} hästkrafter";
         }
         public override string TextToFile(int index)
         {
