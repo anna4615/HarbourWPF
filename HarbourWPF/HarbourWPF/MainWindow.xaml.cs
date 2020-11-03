@@ -16,6 +16,12 @@ namespace HarbourWPF
         {
             InitializeComponent();
 
+            if (File.Exists("BoatsInDock1.txt") == false)
+            {
+                FileStream fs1 = File.Create("BoatsInDock1.txt");
+                fs1.Close();
+            }
+
             var fileText = File.ReadLines("BoatsInDock1.txt", System.Text.Encoding.UTF7);
 
             HarbourSpace[] dock1 = new HarbourSpace[32];
@@ -23,7 +29,22 @@ namespace HarbourWPF
             {
                 dock1[i] = new HarbourSpace(i);
             }
+
             AddBoatsFromFileToHarbour(fileText, dock1);
+
+            string dockName = "Kaj 1";
+            int dockLenght = dock1.Length;
+            harbourCanvas.Children.Clear();
+            AddSpacesToDockCanvas(dockName, dockLenght);
+
+            int dockId = 1;
+            PlaceBoatsInHarbourCanvas(dock1, dockId);
+
+            if (File.Exists("BoatsInDock2.txt") == false)
+            {
+                FileStream fs2 = File.Create("BoatsInDock2.txt");
+                fs2.Close();
+            }
 
             fileText = File.ReadLines("BoatsInDock2.txt", System.Text.Encoding.UTF7);
 
@@ -34,6 +55,13 @@ namespace HarbourWPF
             }
             AddBoatsFromFileToHarbour(fileText, dock2);
 
+            dockName = "Kaj 2";
+            dockLenght = dock2.Length;
+            AddSpacesToDockCanvas(dockName, dockLenght);
+
+            dockId = 2;
+            PlaceBoatsInHarbourCanvas(dock2, dockId);
+
             PrintHarbourTable(dock1, dock2);
 
             List<Boat> boatsInDock1 = GenerateBoatsInHarbourList(dock1);
@@ -42,57 +70,22 @@ namespace HarbourWPF
             var boatsInBothDocks = boatsInDock1
                 .Concat(boatsInDock2);
 
-            int sumOfWeight = GenerateSumOfWeight(boatsInBothDocks);
-            double averageSpeed = GenerateAverageSpeed(boatsInBothDocks);
-            int availableSpacesDock1 = CountAvailableSpaces(dock1);
-            int availableSpacesDock2 = CountAvailableSpaces(dock2);
-            summaryListBox.Items.Clear();
-
-            PrintSummaryOfBoats(boatsInBothDocks);
-
-            summaryListBox.Items.Add("\n");
-
-            PrintStatistics(sumOfWeight, averageSpeed, availableSpacesDock1, availableSpacesDock2);
-
-            TextBox dock1Sign = new TextBox();
-            dock1Sign.Text = "Kaj 1";
-            dock1Sign.Width = 40;
-            dock1Sign.Height = 25;
-            Canvas.SetTop(dock1Sign, 0);
-            Canvas.SetLeft(dock1Sign, 5);
-            harbourCanvas.Children.Add(dock1Sign);
-
-            for (int i = 0; i < 32; i++)
+            if (boatsInBothDocks.Count() > 0)
             {
-                TextBox dock1Space = new TextBox();
-                dock1Space.Width = 30;
-                dock1Space.Height = 25;
-                dock1Space.Text = $"A{i + 1}";
-                RegisterName($"A{i}", dock1Space);
-                Canvas.SetLeft(dock1Space, 5);
-                Canvas.SetTop(dock1Space, 26 + (i * 26));
-                harbourCanvas.Children.Add(dock1Space);
+                int sumOfWeight = GenerateSumOfWeight(boatsInBothDocks);
+                double averageSpeed = GenerateAverageSpeed(boatsInBothDocks);
+                int availableSpacesDock1 = CountAvailableSpaces(dock1);
+                int availableSpacesDock2 = CountAvailableSpaces(dock2);
+
+                summaryListBox.Items.Clear();
+
+                PrintSummaryOfBoats(boatsInBothDocks);
+                summaryListBox.Items.Add("\n");
+
+                PrintStatistics(sumOfWeight, averageSpeed, availableSpacesDock1, availableSpacesDock2);
             }
 
-            TextBox dock2Sign = new TextBox();
-            dock2Sign.Text = "Kaj 2";
-            dock2Sign.Width = 40;
-            dock2Sign.Height = 25;
-            Canvas.SetTop(dock2Sign, 0);
-            Canvas.SetRight(dock2Sign, 5);
-            harbourCanvas.Children.Add(dock2Sign);
 
-            for (int i = 0; i < 32; i++)
-            {
-                TextBox dock2Space = new TextBox();
-                dock2Space.Width = 30;
-                dock2Space.Height = 25;
-                dock2Space.Text = $"B{i + 1}";
-                RegisterName($"B{i}", dock2Space);
-                Canvas.SetRight(dock2Space, 5);
-                Canvas.SetTop(dock2Space, 26 + (i * 26));
-                harbourCanvas.Children.Add(dock2Space);
-            }
 
             StreamWriter sw1 = new StreamWriter("BoatsInDock1.txt", false, System.Text.Encoding.UTF7);
             SaveToFile(sw1, dock1);
@@ -101,6 +94,168 @@ namespace HarbourWPF
             StreamWriter sw2 = new StreamWriter("BoatsInDock2.txt", false, System.Text.Encoding.UTF7);
             SaveToFile(sw2, dock2);
             sw2.Close();
+        }
+
+        private void AddSpacesToDockCanvas(string dockName, int dockLenght)
+        {
+            TextBox dockSign = new TextBox();
+            dockSign.Text = dockName;
+            dockSign.Width = 40;
+            dockSign.Height = 25;
+            switch (dockName)
+            {
+                case "Kaj 1":
+                    Canvas.SetLeft(dockSign, 5);
+                    break;
+                case "Kaj 2":
+                    Canvas.SetRight(dockSign, 5);
+                    break;
+
+                default:
+                    break;
+            }
+            harbourCanvas.Children.Add(dockSign);
+
+            for (int i = 0; i < dockLenght; i++)
+            {
+                TextBox dockSpace = new TextBox();
+                dockSpace.Width = 30;
+                dockSpace.Height = 25;
+                dockSpace.Text = $"{i + 1}";
+                switch (dockName)
+                {
+                    case "Kaj 1":
+                        Canvas.SetLeft(dockSpace, 5);
+                        break;
+                    case "Kaj 2":
+                        Canvas.SetRight(dockSpace, 5);
+                        break;
+
+                    default:
+                        break;
+                }
+                Canvas.SetTop(dockSpace, 26 + (i * 26));
+                harbourCanvas.Children.Add(dockSpace);
+            }
+        }
+
+
+
+
+
+        private void PlaceBoatsInHarbourCanvas(HarbourSpace[] dock, int dockId)
+        {
+            for (int i = 0; i < dock.Length; i++)
+            {
+                foreach (Boat boat in dock[i].ParkedBoats)
+                {
+                    int width, height;
+
+                    if (boat is RowingBoat)
+                    {
+                        AddRowingBoatsToHarbourCanvas(dock[i], dockId);
+                    }
+
+                    else if (boat is MotorBoat)
+                    {
+                        width = 45;
+                        height = 25;
+                        harbourCanvas.Children.Add(CreateBoatBox(dockId, dock[i].SpaceId, boat, width, height));
+                    }
+
+                    else if (boat is SailingBoat)
+                    {
+                        width = 45;
+                        height = 51;
+                        if (i == 0)
+                        {
+                            harbourCanvas.Children.Add(CreateBoatBox(dockId, dock[i].SpaceId, boat, width, height));
+                        }
+                        else if (dock[i - 1].ParkedBoats.Contains(boat) == false)
+                        {
+                            harbourCanvas.Children.Add(CreateBoatBox(dockId, dock[i].SpaceId, boat, width, height));
+                        }
+                    }
+                    else if (boat is Catamaran)
+                    {
+                        width = 45;
+                        height = 77;
+                        if (i == 0)
+                        {
+                            harbourCanvas.Children.Add(CreateBoatBox(dockId, dock[i].SpaceId, boat, width, height));
+                        }
+                        else if (dock[i - 1].ParkedBoats.Contains(boat) == false)
+                        {
+                            harbourCanvas.Children.Add(CreateBoatBox(dockId, dock[i].SpaceId, boat, width, height));
+                        }
+                    }
+                    else if (boat is CargoShip)
+                    {
+                        width = 45;
+                        height = 103;
+                        if (i == 0)
+                        {
+                            harbourCanvas.Children.Add(CreateBoatBox(dockId, dock[i].SpaceId, boat, width, height));
+                        }
+                        else if (dock[i - 1].ParkedBoats.Contains(boat) == false)
+                        {
+                            harbourCanvas.Children.Add(CreateBoatBox(dockId, dock[i].SpaceId, boat, width, height));
+                        }
+                    }
+                }
+            }
+        }
+
+        private void AddRowingBoatsToHarbourCanvas(HarbourSpace harbourSpace, int dockId)
+        {
+            int i = 0;
+            foreach (var boat in harbourSpace.ParkedBoats)
+            {
+                TextBox boatBox = new TextBox();
+
+                boatBox.Width = 45;
+                boatBox.Height = 12;
+                boatBox.Text = boat.IdNumber;
+                boatBox.FontSize = 9;
+                switch (dockId)
+                {
+                    case 1:
+                        Canvas.SetLeft(boatBox, 37);
+                        break;
+                    case 2:
+                        Canvas.SetRight(boatBox, 37);
+                        break;
+                    default:
+                        break;
+                }
+                Canvas.SetTop(boatBox, 26 + i + (harbourSpace.SpaceId * 26));
+                harbourCanvas.Children.Add(boatBox);
+                i += 13;
+            }
+        }
+
+        private TextBox CreateBoatBox(int dockId, int dockIndex, Boat boat, int width, int height)
+        {
+            TextBox boatBox = new TextBox();
+
+            boatBox.Width = width;
+            boatBox.Height = height;
+            boatBox.Text = boat.IdNumber;
+            boatBox.FontSize = 9;
+            switch (dockId)
+            {
+                case 1:
+                    Canvas.SetLeft(boatBox, 37);
+                    break;
+                case 2:
+                    Canvas.SetRight(boatBox, 37);
+                    break;
+                default:
+                    break;
+            }
+            Canvas.SetTop(boatBox, 26 + (dockIndex * 26));
+
+            return boatBox;
         }
 
         private void PrintHarbourTable(HarbourSpace[] dock1, HarbourSpace[] dock2)
@@ -115,6 +270,7 @@ namespace HarbourWPF
                 boatsInHarbourListBox.Items.Add(line);
             }
             boatsInHarbourListBox.Items.Add("");
+
             boatsInHarbourListBox.Items.Add("Kaj 2");
             List<string> dock2EndOfDayTable = CreateHarbourTable(dock2);
             foreach (var line in dock2EndOfDayTable)
@@ -123,18 +279,19 @@ namespace HarbourWPF
             }
         }
 
-
-
         private void NextDayButton_Click(object sender, RoutedEventArgs e)
         {
             var fileText = File.ReadLines("BoatsInDock1.txt", System.Text.Encoding.UTF7);
 
-            HarbourSpace[] dock1 = new HarbourSpace[32];
+            HarbourSpace[] dock1 = new HarbourSpace[32]; // Hur kan jag använda längden på dock som skapades efter initialize?
             for (int i = 0; i < dock1.Length; i++)
             {
                 dock1[i] = new HarbourSpace(i);
             }
+
             AddBoatsFromFileToHarbour(fileText, dock1);
+
+
 
             fileText = File.ReadLines("BoatsInDock2.txt", System.Text.Encoding.UTF7);
 
@@ -143,7 +300,10 @@ namespace HarbourWPF
             {
                 dock2[i] = new HarbourSpace(i);
             }
+
             AddBoatsFromFileToHarbour(fileText, dock2);
+
+
 
             List<Boat> boatsInDock1 = GenerateBoatsInHarbourList(dock1);
             List<Boat> boatsInDock2 = GenerateBoatsInHarbourList(dock2);
@@ -239,28 +399,41 @@ namespace HarbourWPF
 
             PrintHarbourTable(dock1, dock2);
 
+            harbourCanvas.Children.Clear();
+            string dockName = "Kaj 1";
+            int dockLenght = dock1.Length;
+            AddSpacesToDockCanvas(dockName, dockLenght);
+
+            int dockId = 1;
+            PlaceBoatsInHarbourCanvas(dock1, dockId);
+
+            dockName = "Kaj 2";
+            dockLenght = dock1.Length;
+            AddSpacesToDockCanvas(dockName, dockLenght);
+
+            dockId = 2;
+            PlaceBoatsInHarbourCanvas(dock2, dockId);
+
             boatsInDock1 = GenerateBoatsInHarbourList(dock1);
             boatsInDock2 = GenerateBoatsInHarbourList(dock2);
 
             var boatsInBothDocks = boatsInDock1
                 .Concat(boatsInDock2);
 
+            if (boatsInBothDocks.Count() > 0)
+            {
+                int sumOfWeight = GenerateSumOfWeight(boatsInBothDocks);
+                double averageSpeed = GenerateAverageSpeed(boatsInBothDocks);
+                int availableSpacesDock1 = CountAvailableSpaces(dock1);
+                int availableSpacesDock2 = CountAvailableSpaces(dock2);
 
-            int sumOfWeight = GenerateSumOfWeight(boatsInBothDocks);
-            double averageSpeed = GenerateAverageSpeed(boatsInBothDocks);
-            int availableSpacesDock1 = CountAvailableSpaces(dock1);
-            int availableSpacesDock2 = CountAvailableSpaces(dock2);
-            summaryListBox.Items.Clear();
-
-            PrintSummaryOfBoats(boatsInBothDocks);
-
-            summaryListBox.Items.Add("\n");
-
-            PrintStatistics(sumOfWeight, averageSpeed, availableSpacesDock1, availableSpacesDock2);
-
-            summaryListBox.Items.Add("");
-
-            PrintRejectedBoats(rejectedRowingBoats, rejectedMotorBoats, rejectedSailingBoats, rejectedCatamarans, rejectedCargoShips);
+                summaryListBox.Items.Clear();
+                PrintSummaryOfBoats(boatsInBothDocks);
+                summaryListBox.Items.Add("\n");
+                PrintStatistics(sumOfWeight, averageSpeed, availableSpacesDock1, availableSpacesDock2);
+                summaryListBox.Items.Add("");
+                PrintRejectedBoats(rejectedRowingBoats, rejectedMotorBoats, rejectedSailingBoats, rejectedCatamarans, rejectedCargoShips);
+            }
 
             StreamWriter sw1 = new StreamWriter("BoatsInDock1.txt", false, System.Text.Encoding.UTF7);
             SaveToFile(sw1, dock1);
@@ -284,19 +457,11 @@ namespace HarbourWPF
 
         private void PrintStatistics(int sumOfWeight, double averageSpeed, int availableSpacesDock1, int availableSpacesDock2)
         {
-            //List<string> statistics = new List<string>();
-
             summaryListBox.Items.Add("Statistik\n---------");
             summaryListBox.Items.Add($"Total båtvikt i hamn:\t{sumOfWeight} kg");
             summaryListBox.Items.Add($"Medel av maxhastighet:\t{Math.Round(Utils.ConvertKnotToKmPerHour(averageSpeed), 1)} km/h");
             summaryListBox.Items.Add($"Lediga platser vid kaj 1:\t{availableSpacesDock1} st");
             summaryListBox.Items.Add($"Lediga platser vid kaj 2:\t{availableSpacesDock2} st");
-
-            //foreach (var line in statistics)
-            //{
-            //    summaryListBox.Items.Add(line);
-            //}
-
         }
 
         private static int CountAvailableSpaces(HarbourSpace[] dock)
@@ -458,7 +623,7 @@ namespace HarbourWPF
             return text;
         }
 
-        private static void AddBoatsFromFileToHarbour(IEnumerable<string> fileText, HarbourSpace[] dock)
+        private void AddBoatsFromFileToHarbour(IEnumerable<string> fileText, HarbourSpace[] dock)
         {
             // File:
             // spaceId;Id;Weight;MaxSpeed;Type;DaysStaying;DaySinceArrival;Special
@@ -473,16 +638,16 @@ namespace HarbourWPF
                 {
                     case "Roddbåt":
                         index = int.Parse(boatData[0]);
-                        dock[index].ParkedBoats.Add
-                            (new RowingBoat(boatData[1], int.Parse(boatData[2]), int.Parse(boatData[3]),
-                            int.Parse(boatData[5]), int.Parse(boatData[6]), int.Parse(boatData[7])));
+                        RowingBoat rowingBoat = new RowingBoat(boatData[1], int.Parse(boatData[2]), int.Parse(boatData[3]),
+                            int.Parse(boatData[5]), int.Parse(boatData[6]), int.Parse(boatData[7]));
+                        dock[index].ParkedBoats.Add(rowingBoat);
                         break;
 
                     case "Motorbåt":
                         index = int.Parse(boatData[0]);
-                        dock[index].ParkedBoats.Add
-                            (new MotorBoat(boatData[1], int.Parse(boatData[2]), int.Parse(boatData[3]),
-                            int.Parse(boatData[5]), int.Parse(boatData[6]), int.Parse(boatData[7])));
+                        MotorBoat motorBoat = new MotorBoat(boatData[1], int.Parse(boatData[2]), int.Parse(boatData[3]),
+                            int.Parse(boatData[5]), int.Parse(boatData[6]), int.Parse(boatData[7]));
+                        dock[index].ParkedBoats.Add(motorBoat);
                         break;
 
                     case "Segelbåt":
@@ -532,7 +697,7 @@ namespace HarbourWPF
 
         private static void SaveToFile(StreamWriter sw, HarbourSpace[] harbour)
         {
-            //int index = 0;
+            int index = 0;
             foreach (var space in harbour)
             {
                 if (space != null)
@@ -545,7 +710,7 @@ namespace HarbourWPF
                         }
                     }
                 }
-                //index++;
+                index++;
             }
 
             sw.Close();
