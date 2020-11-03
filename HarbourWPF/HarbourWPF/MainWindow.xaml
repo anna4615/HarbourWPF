@@ -10,7 +10,7 @@
         <Button x:Name="nextDayButton" Content="Nästa dag" HorizontalAlignment="Left" Margin="633,56,0,0" VerticalAlignment="Top" Width="70" Click="NextDayButton_Click" />
         <ListBox x:Name="boatsInHarbourListBox" HorizontalAlignment="Left" Height="932" Margin="12,24,0,0" VerticalAlignment="Top" Width="488" FontSize="11"/>
         <ListBox x:Name="summaryListBox" HorizontalAlignment="Left" Height="486" Margin="523,109,0,0" VerticalAlignment="Top" Width="290"/>
-        <Canvas x:Name="harbourCanvas" HorizontalAlignment="Left" Height="932" Margin="867,24,0,0" VerticalAlignment="Top" Width="296"/>
+        <Canvas x:Name="harbourCanvas" HorizontalAlignment="Left" Height="932" Margin="867,24,0,0" VerticalAlignment="Top" Width="259"/>
 
     </Grid>
 </Window>

@@ -85,8 +85,6 @@ namespace HarbourWPF
                 PrintStatistics(sumOfWeight, averageSpeed, availableSpacesDock1, availableSpacesDock2);
             }
 
-
-
             StreamWriter sw1 = new StreamWriter("BoatsInDock1.txt", false, System.Text.Encoding.UTF7);
             SaveToFile(sw1, dock1);
             sw1.Close();
@@ -138,10 +136,6 @@ namespace HarbourWPF
                 harbourCanvas.Children.Add(dockSpace);
             }
         }
-
-
-
-
 
         private void PlaceBoatsInHarbourCanvas(HarbourSpace[] dock, int dockId)
         {
@@ -217,6 +211,9 @@ namespace HarbourWPF
                 boatBox.Height = 12;
                 boatBox.Text = boat.IdNumber;
                 boatBox.FontSize = 9;
+                // Borde gjort två Canvaser och skickat den aktuella som parameter till metoden,
+                // då kunde jag ha alignat allt till vänster (Spaceboxarna hade då alltid varit till vänster om båtarna)
+                //  och det det hade gått att utöka till fler än två kajer.
                 switch (dockId)
                 {
                     case 1:
@@ -241,7 +238,7 @@ namespace HarbourWPF
             boatBox.Width = width;
             boatBox.Height = height;
             boatBox.Text = boat.IdNumber;
-            boatBox.FontSize = 9;
+            boatBox.FontSize = 10;
             switch (dockId)
             {
                 case 1:
@@ -291,8 +288,6 @@ namespace HarbourWPF
 
             AddBoatsFromFileToHarbour(fileText, dock1);
 
-
-
             fileText = File.ReadLines("BoatsInDock2.txt", System.Text.Encoding.UTF7);
 
             HarbourSpace[] dock2 = new HarbourSpace[32];
@@ -302,8 +297,6 @@ namespace HarbourWPF
             }
 
             AddBoatsFromFileToHarbour(fileText, dock2);
-
-
 
             List<Boat> boatsInDock1 = GenerateBoatsInHarbourList(dock1);
             List<Boat> boatsInDock2 = GenerateBoatsInHarbourList(dock2);
@@ -331,7 +324,7 @@ namespace HarbourWPF
             List<Boat> arrivingBoats = new List<Boat>();
             int NumberOfArrivingBoats = 10;
 
-            CreateNewBoats(arrivingBoats, NumberOfArrivingBoats); // Tar bor tillfälligt, för att kunna styra vilka båtar som läggs till
+            CreateNewBoats(arrivingBoats, NumberOfArrivingBoats);
 
             // Skapar båtar för test, ta bort sedan
             //arrivingBoats.Add(new MotorBoat("M-" + Boat.GenerateID(), 10, 2, 3, 0, 4));
@@ -349,7 +342,6 @@ namespace HarbourWPF
                 if (boat is RowingBoat)
                 {
                     boatParked = RowingBoat.ParkRowingBoatInHarbour(boat, dock1, dock2);
-
                     if (boatParked == false)
                     {
                         rejectedRowingBoats++;
@@ -359,7 +351,6 @@ namespace HarbourWPF
                 else if (boat is MotorBoat)
                 {
                     boatParked = MotorBoat.ParkMotorBoatInHarbour(boat, dock1, dock2);
-
                     if (boatParked == false)
                     {
                         rejectedMotorBoats++;
@@ -369,7 +360,6 @@ namespace HarbourWPF
                 else if (boat is SailingBoat)
                 {
                     boatParked = SailingBoat.ParkSailingBoatInHarbour(boat, dock1, dock2);
-
                     if (boatParked == false)
                     {
                         rejectedSailingBoats++;
@@ -379,7 +369,6 @@ namespace HarbourWPF
                 else if (boat is Catamaran)
                 {
                     boatParked = Catamaran.ParkCatamaranInHarbour(boat, dock1, dock2);
-
                     if (boatParked == false)
                     {
                         rejectedCatamarans++;
@@ -389,7 +378,6 @@ namespace HarbourWPF
                 else if (boat is CargoShip)
                 {
                     boatParked = CargoShip.ParkCargoshipInHarbour(boat, dock1, dock2);
-
                     if (boatParked == false)
                     {
                         rejectedCargoShips++;
@@ -492,8 +480,6 @@ namespace HarbourWPF
 
         private void PrintSummaryOfBoats(IEnumerable<Boat> boatsInHarbour)
         {
-            //List<string> summaryOfBoats = new List<string>();
-
             summaryListBox.Items.Add("Summering av båtar i hamn\n-------------------------");
 
             var q = boatsInHarbour
@@ -519,7 +505,7 @@ namespace HarbourWPF
             {
                 foreach (Boat boat in space.ParkedBoats)
                 {
-                    if (boat.DaysSinceArrival >= boat.DaysStaying)
+                    if (boat.DaysSinceArrival == boat.DaysStaying)
                     {
                         space.ParkedBoats.Remove(boat);
                         boatRemoved = true;
@@ -583,7 +569,6 @@ namespace HarbourWPF
             text.Add("Båtplats\tBåttyp\t\tID\tVikt\tMaxfart\tÖvrigt\n" +
                       "        \t      \t\t  \t(kg)\t(km/h)\n" +
                       "--------\t----------\t-----\t-----\t-------\t------------------------------");
-
 
             foreach (var space in dock)
             {
@@ -652,38 +637,38 @@ namespace HarbourWPF
 
                     case "Segelbåt":
                         index = int.Parse(boatData[0]);
-                        if (dock[index].ParkedBoats.Count == 0) // När andra halvan av segelbåten kommmer från foreach är den redan tillagd på den platsen annars hade det blivit två kopior av samma båt
+                        if (dock[index].ParkedBoats.Count == 0) // När andra halvan av segelbåten kommmer från foreach är den redan tillagd, se 6 rader ned
                         {
                             SailingBoat sailingBoat = new SailingBoat(boatData[1], int.Parse(boatData[2]), int.Parse(boatData[3]),
                                 int.Parse(boatData[5]), int.Parse(boatData[6]), int.Parse(boatData[7]));
 
                             dock[index].ParkedBoats.Add(sailingBoat);
-                            dock[index + 1].ParkedBoats.Add(sailingBoat); // samma båt på två platser
+                            dock[index + 1].ParkedBoats.Add(sailingBoat); // samma båt täcker två platser
                         }
                         break;
 
                     case "Katamaran":
                         index = int.Parse(boatData[0]);
-                        if (dock[index].ParkedBoats.Count == 0) // När resten av lastfartyget kommmer från foreach är det redan tillagt, annars hade det blivit kopior
+                        if (dock[index].ParkedBoats.Count == 0) // När resten av lastfartyget kommmer från foreach är det redan tillagt, se 6 rader ned
                         {
                             Catamaran catamaran = new Catamaran(boatData[1], int.Parse(boatData[2]), int.Parse(boatData[3]),
                             int.Parse(boatData[5]), int.Parse(boatData[6]), int.Parse(boatData[7]));
 
                             dock[index].ParkedBoats.Add(catamaran);
-                            dock[index + 1].ParkedBoats.Add(catamaran);
+                            dock[index + 1].ParkedBoats.Add(catamaran); // samma båt täcker tre platser
                             dock[index + 2].ParkedBoats.Add(catamaran);
                         }
                         break;
 
                     case "Lastfartyg":
                         index = int.Parse(boatData[0]);
-                        if (dock[index].ParkedBoats.Count == 0) // När resten av lastfartyget kommmer från foreach är det redan tillagt, annars hade det blivit kopior
+                        if (dock[index].ParkedBoats.Count == 0) // När resten av lastfartyget kommmer från foreach är det redan tillagt// samma båt täcker två platser
                         {
                             CargoShip cargoship = new CargoShip(boatData[1], int.Parse(boatData[2]), int.Parse(boatData[3]),
                             int.Parse(boatData[5]), int.Parse(boatData[6]), int.Parse(boatData[7]));
 
                             dock[index].ParkedBoats.Add(cargoship);
-                            dock[index + 1].ParkedBoats.Add(cargoship);
+                            dock[index + 1].ParkedBoats.Add(cargoship); // samma båt täcker fyra platser
                             dock[index + 2].ParkedBoats.Add(cargoship);
                             dock[index + 3].ParkedBoats.Add(cargoship);
                         }

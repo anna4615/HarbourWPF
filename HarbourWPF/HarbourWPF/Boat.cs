@@ -21,6 +21,10 @@ namespace HarbourWPF
             DaysSinceArrival = daysSinceArrival;
         }
 
+        public override string ToString()
+        {
+            return $"{Type}  \t{IdNumber}\t{Weight}\t{Math.Round(Utils.ConvertKnotToKmPerHour(MaximumSpeed), 0)}";
+        }
 
         public static string GenerateID()
         {
