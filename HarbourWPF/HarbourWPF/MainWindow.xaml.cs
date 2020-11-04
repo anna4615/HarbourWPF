@@ -12,7 +12,7 @@ namespace HarbourWPF
     /// </summary>
     public partial class MainWindow : Window
     {
-        // Om det finns båtar lagrade i en fil måste dockLength vara minst lika stort som högsta index i filen
+        // Om det finns båtar lagrade i en fil måste dockLength vara minst lika stort som högsta index + 1 i filen
         readonly int dock1Length = 32;
         readonly int dock2Length = 32;
 
@@ -143,7 +143,7 @@ namespace HarbourWPF
 
             List<Boat> arrivingBoats = new List<Boat>();
             int NumberOfArrivingBoats = 10;             // Det blir nästan aldrig fullt i hamnen om det kommer 5 båtar, ändrade till 10 för att vis att tabellen för avvisade båtar funkar
-            CreateNewBoats(arrivingBoats, NumberOfArrivingBoats);
+            AddNewBoats(arrivingBoats, NumberOfArrivingBoats);
 
             foreach (var boat in arrivingBoats)
             {
@@ -319,9 +319,9 @@ namespace HarbourWPF
 
             List<Boat> allCopies = new List<Boat>();
 
-            foreach (var space in q1)
+            foreach (DockSpace space in q1)
             {
-                foreach (var boat in space.ParkedBoats)
+                foreach (Boat boat in space.ParkedBoats)
                 {
                     allCopies.Add(boat); // Innehåller kopior
                 }
@@ -345,7 +345,7 @@ namespace HarbourWPF
 
         private static void AddDayToDaysSinceArrival(List<Boat> boats)
         {
-            foreach (var boat in boats)
+            foreach (Boat boat in boats)
             {
                 boat.DaysSinceArrival++;
             }
@@ -375,7 +375,7 @@ namespace HarbourWPF
             return boatRemoved;
         }
 
-        private static void CreateNewBoats(List<Boat> boats, int newBoats)
+        private static void AddNewBoats(List<Boat> boats, int newBoats)
         {
             for (int i = 0; i < newBoats; i++)
             {
@@ -384,19 +384,19 @@ namespace HarbourWPF
                 switch (boatType)
                 {
                     case 0:
-                        RowingBoat.CreateRowingBoat(boats);
+                        RowingBoat.AddRowingBoat(boats);
                         break;
                     case 1:
-                        MotorBoat.CreateMotorBoat(boats);
+                        MotorBoat.AddMotorBoat(boats);
                         break;
                     case 2:
-                        SailingBoat.CreateSailingBoat(boats);
+                        SailingBoat.AddSailingBoat(boats);
                         break;
                     case 3:
-                        Catamaran.CreateCatamaran(boats);
+                        Catamaran.AddCatamaran(boats);
                         break;
                     case 4:
-                        CargoShip.CreateCargoShip(boats);
+                        CargoShip.AddCargoShip(boats);
                         break;
                 }
             }

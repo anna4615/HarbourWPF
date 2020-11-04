@@ -26,7 +26,7 @@ namespace HarbourWPF
             return base.TextToFile(index) + $"{Beds}";
         }
 
-        public static void CreateCatamaran(List<Boat> boats)
+        public static void AddCatamaran(List<Boat> boats)
         {
             string id = "K-" + GenerateID();
             int weight = Utils.random.Next(1200, 8000 + 1);

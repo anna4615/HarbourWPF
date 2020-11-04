@@ -15,7 +15,7 @@ namespace HarbourWPF
             Containers = containers;
         }
 
-        public static void CreateCargoShip(List<Boat> boats)
+        public static void AddCargoShip(List<Boat> boats)
         {
             string id = "L-" + GenerateID();
             int weight = Utils.random.Next(3000, 20000 + 1);

@@ -16,7 +16,7 @@ namespace HarbourWPF
             Power = power;
         }
 
-        public static void CreateMotorBoat(List<Boat> boats)
+        public static void AddMotorBoat(List<Boat> boats)
         {
             string id = "M-" + GenerateID();
             int weight = Utils.random.Next(200, 3000 + 1);

@@ -17,7 +17,7 @@ namespace HarbourWPF
             MaximumPassengers = maxPassengers;
         }
 
-        public static void CreateRowingBoat(List<Boat> boats)
+        public static void AddRowingBoat(List<Boat> boats)
         {
             string id = "R-" + GenerateID();
             int weight = Utils.random.Next(100, 300 + 1);

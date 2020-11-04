@@ -16,7 +16,7 @@ namespace HarbourWPF
             Length = length;
         }
 
-        public static void CreateSailingBoat(List<Boat> boats)
+        public static void AddSailingBoat(List<Boat> boats)
         {
             string id = "S-" + GenerateID();
             int weight = Utils.random.Next(800, 6000 + 1);
