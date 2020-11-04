@@ -12,14 +12,25 @@ namespace HarbourWPF
         public SailingBoat(string id, int weight, int maxSpeed, int daysStaying, int daysSinceArrival, int length)
             : base(weight, maxSpeed, daysStaying, daysSinceArrival)
         {
-            IdNumber = id;
             Type = "Segelbåt";
+            IdNumber = id;
             Length = length;
+        }
+        public static void CreateSailingBoat(List<Boat> boats)
+        {
+            string id = "S-" + GenerateID();
+            int weight = Utils.random.Next(800, 6000 + 1);
+            int maxSpeed = Utils.random.Next(1, 12 + 1);
+            int daysStaying = 4;
+            int daysSinceArrival = 0;
+            int length = Utils.random.Next(10, 60 + 1);
+
+            boats.Add(new SailingBoat(id, weight, maxSpeed, daysStaying, daysSinceArrival, length));
         }
 
         public override string ToString()
         {
-            return base.ToString() + $"\tLängd:\t\t{Math.Round(Utils.ConvertFeetToMeter(Length))} meter";
+            return base.ToString() + $"\tLängd:\t\t{Math.Round(Utils.ConvertFeetToMeter(Length), 1)} meter";
         }
 
         public override string TextToFile(int index)
@@ -27,19 +38,7 @@ namespace HarbourWPF
             return base.TextToFile(index) + $"{Length}";
         }
 
-        public static void CreateSailingBoat(List<Boat> boats)
-        {
-            string id = "S-" + GenerateID();
-            int weight = Utils.r.Next(800, 6000 + 1);
-            int maxSpeed = Utils.r.Next(12 + 1);
-            int daysStaying = 4;
-            int daysSinceArrival = 0;
-            int length = Utils.r.Next(10, 60 + 1);
-
-            boats.Add(new SailingBoat(id, weight, maxSpeed, daysStaying, daysSinceArrival, length));
-        }
-
-        public static bool ParkSailingBoatInHarbour(Boat boat, HarbourSpace[] dock1, HarbourSpace[] dock2)
+        public static bool ParkSailingBoatInHarbour(Boat boat, DockSpace[] dock1, DockSpace[] dock2)
         {
             bool boatParked;
 
@@ -85,7 +84,7 @@ namespace HarbourWPF
             return boatParked;
         }
 
-        private static (int selectedSpace, bool spaceFound) FindDoubleSpaceBetweenOccupiedSpaces(HarbourSpace[] dock)
+        private static (int selectedSpace, bool spaceFound) FindDoubleSpaceBetweenOccupiedSpaces(DockSpace[] dock)
         {
             int selectedSpace = 0;
             bool spaceFound = false;
@@ -131,7 +130,7 @@ namespace HarbourWPF
             return (selectedSpace, spaceFound);
         }
 
-        private static (int selectedSpace, bool spaceFound) FindFirstTwoFreeSpaces(HarbourSpace[] dock)
+        private static (int selectedSpace, bool spaceFound) FindFirstTwoFreeSpaces(DockSpace[] dock)
         {
             int selectedSpace = 0;
             bool spaceFound = false;

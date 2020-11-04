@@ -6,7 +6,7 @@ namespace HarbourWPF
 {
     class Utils
     {
-        public static Random r = new Random();
+        public static Random random = new Random();
 
         public static string PrintTextFromFile(IEnumerable<string> text)
         {
@@ -27,7 +27,7 @@ namespace HarbourWPF
 
         public static double ConvertFeetToMeter(int feet)
         {
-            return feet * 3.281;
+            return feet * 0.305;
         }
     }
 }

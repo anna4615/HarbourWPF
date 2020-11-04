@@ -12,31 +12,34 @@ namespace HarbourWPF
         public CargoShip(string id, int weight, int maxSpeed, int daysStaying, int daysSinceArrival, int containers)
             : base(weight, maxSpeed, daysStaying, daysSinceArrival)
         {
-            IdNumber = id;
             Type = "Lastfartyg";
+            IdNumber = id;
             Containers = containers;
         }
-        public override string ToString()
-        {
-            return base.ToString() + $"\tContainers:\t{Containers} stycken";
-        }
-        public override string TextToFile(int index)
-        {
-            return base.TextToFile(index) + $"{Containers}";
-        }
+
         public static void CreateCargoShip(List<Boat> boats)
         {
             string id = "L-" + GenerateID();
-            int weight = Utils.r.Next(3000, 20000 + 1);
-            int maxSpeed = Utils.r.Next(20 + 1);
+            int weight = Utils.random.Next(3000, 20000 + 1);
+            int maxSpeed = Utils.random.Next(1, 20 + 1);
             int daysStaying = 6;
             int daysSinceArrival = 0;
-            int containers = Utils.r.Next(500 + 1);
+            int containers = Utils.random.Next(500 + 1);
 
             boats.Add(new CargoShip(id, weight, maxSpeed, daysStaying, daysSinceArrival, containers));
         }
 
-        internal static bool ParkCargoshipInHarbour(Boat boat, HarbourSpace[] dock1, HarbourSpace[] dock2)
+        public override string ToString()
+        {
+            return base.ToString() + $"\tContainers:\t{Containers} stycken";
+        }
+
+        public override string TextToFile(int index)
+        {
+            return base.TextToFile(index) + $"{Containers}";
+        }
+
+        internal static bool ParkCargoshipInHarbour(Boat boat, DockSpace[] dock1, DockSpace[] dock2)
         {
             bool boatParked;
 
@@ -90,7 +93,7 @@ namespace HarbourWPF
             return boatParked;
         }
 
-        private static (int selectedSpace, bool spaceFound) FindFourSpacesBetweenOccupiedSpaces(HarbourSpace[] dock)
+        private static (int selectedSpace, bool spaceFound) FindFourSpacesBetweenOccupiedSpaces(DockSpace[] dock)
         {
             int selectedSpace = 0;
             bool spaceFound = false;
@@ -143,7 +146,7 @@ namespace HarbourWPF
             return (selectedSpace, spaceFound);
         }
 
-        private static (int selectedSpace, bool spaceFound) FindFirstFourFreeSpaces(HarbourSpace[] dock)
+        private static (int selectedSpace, bool spaceFound) FindFirstFourFreeSpaces(DockSpace[] dock)
         {
             int selectedSpace = 0;
             bool spaceFound = false;

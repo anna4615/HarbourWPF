@@ -32,8 +32,8 @@ namespace HarbourWPF
 
             for (int i = 0; i < 3; i++)
             {
-                int number = Utils.r.Next(26);
-                char c = (char)('A' + number);
+                int number = Utils.random.Next(26);
+                char c = (char)('A' + number);  // A-Z
                 id += c;
             }
 

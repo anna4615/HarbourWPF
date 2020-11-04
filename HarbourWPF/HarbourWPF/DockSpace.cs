@@ -4,12 +4,12 @@ using System.Text;
 
 namespace HarbourWPF
 {
-    class HarbourSpace
+    class DockSpace
     {
         public int SpaceId { get; set; }
         public List<Boat> ParkedBoats { get; set; }
 
-        public HarbourSpace(int id)
+        public DockSpace(int id)
         {
             SpaceId = id;
             ParkedBoats = new List<Boat>();

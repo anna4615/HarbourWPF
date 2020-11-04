@@ -5,12 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HarbourWPF"
         mc:Ignorable="d"
-        Title="MainWindow" Height="1000" Width="1200">
+        Title="MainWindow" Height="950" Width="1200">
     <Grid>
-        <Button x:Name="nextDayButton" Content="Nästa dag" HorizontalAlignment="Left" Margin="633,56,0,0" VerticalAlignment="Top" Width="70" Click="NextDayButton_Click" />
-        <ListBox x:Name="boatsInHarbourListBox" HorizontalAlignment="Left" Height="932" Margin="12,24,0,0" VerticalAlignment="Top" Width="488" FontSize="11"/>
-        <ListBox x:Name="summaryListBox" HorizontalAlignment="Left" Height="486" Margin="523,109,0,0" VerticalAlignment="Top" Width="290"/>
-        <Canvas x:Name="harbourCanvas" HorizontalAlignment="Left" Height="932" Margin="867,24,0,0" VerticalAlignment="Top" Width="259"/>
+        <Button x:Name="nextDayButton" Content="Nästa dag" HorizontalAlignment="Left" Margin="621,601,0,0" VerticalAlignment="Top" Width="70" Click="NextDayButton_Click" />
+        <ListBox x:Name="boatsInHarbourListBox" HorizontalAlignment="Left" Height="880" Margin="12,24,0,0" VerticalAlignment="Top" Width="488" FontSize="11"/>
+        <ListBox x:Name="summaryListBox" HorizontalAlignment="Left" Height="486" Margin="523,24,0,0" VerticalAlignment="Top" Width="266"/>
+        <Canvas x:Name="dock1Canvas" HorizontalAlignment="Left" Height="880" Margin="843,24,0,0" VerticalAlignment="Top" Width="125"/>
+        <Canvas x:Name="dock2Canvas" HorizontalAlignment="Left" Height="880" Margin="1004,24,0,0" VerticalAlignment="Top" Width="125"/>
 
     </Grid>
 </Window>

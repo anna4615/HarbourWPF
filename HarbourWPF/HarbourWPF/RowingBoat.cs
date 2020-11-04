@@ -9,12 +9,24 @@ namespace HarbourWPF
     {
         public int MaximumPassengers { get; set; }
 
-        public RowingBoat(/*string type, */string id, int weight, int maxSpeed, int daysStaying, int daysSinceArrival, int maxPassengers)
+        public RowingBoat(string id, int weight, int maxSpeed, int daysStaying, int daysSinceArrival, int maxPassengers)
             : base(weight, maxSpeed, daysStaying, daysSinceArrival)
         {
             Type = "Roddbåt";
             IdNumber = id;
             MaximumPassengers = maxPassengers;
+        }
+
+        public static void CreateRowingBoat(List<Boat> boats)
+        {
+            string id = "R-" + GenerateID();
+            int weight = Utils.random.Next(100, 300 + 1);
+            int maxSpeed = Utils.random.Next(1, 3 + 1);
+            int daysStaying = 1;
+            int daysSinceArrival = 0;
+            int maxPassengers = Utils.random.Next(1, 6 + 1);
+
+            boats.Add(new RowingBoat(id, weight, maxSpeed, daysStaying, daysSinceArrival, maxPassengers));
         }
 
         public override string ToString()
@@ -27,19 +39,7 @@ namespace HarbourWPF
             return base.TextToFile(index) + $"{MaximumPassengers}";
         }
 
-        public static void CreateRowingBoat(List<Boat> boats)
-        {
-            string id = "R-" + GenerateID();
-            int weight = Utils.r.Next(100, 300 + 1);
-            int maxSpeed = Utils.r.Next(3 + 1);
-            int daysStaying = 1;
-            int daysSinceArrival = 0;
-            int maxPassengers = Utils.r.Next(1, 6 + 1);
-
-            boats.Add(new RowingBoat(id, weight, maxSpeed, daysStaying, daysSinceArrival, maxPassengers));
-        }
-
-        public static bool ParkRowingBoatInHarbour(Boat boat, HarbourSpace[] dock1, HarbourSpace[] dock2)
+        public static bool ParkRowingBoatInHarbour(Boat boat, DockSpace[] dock1, DockSpace[] dock2)
         {
             bool boatParked;
 
@@ -95,7 +95,7 @@ namespace HarbourWPF
             return boatParked;
         }
 
-        internal static (int selectedSpace, bool boatParked) FindSpaceWithParkedRowingBoat(HarbourSpace[] dock)
+        internal static (int selectedSpace, bool boatParked) FindSpaceWithParkedRowingBoat(DockSpace[] dock)
         {
             int selectedSpace = 0;
             bool spaceFound = false;
@@ -104,7 +104,7 @@ namespace HarbourWPF
             {
                 foreach (var boat in space.ParkedBoats)
                 {
-                    if (boat is RowingBoat && space.ParkedBoats.Count() == 1) // Lyckades inte använda villkoret boat is Rowingboat efter Linq-metod
+                    if (boat is RowingBoat && space.ParkedBoats.Count() == 1)
                     {
                         selectedSpace = space.SpaceId;
                         spaceFound = true;
@@ -119,7 +119,7 @@ namespace HarbourWPF
             return (selectedSpace, spaceFound);
         }
 
-        internal static (int harbourPosition, bool spaceFound) FindSingleSpaceBetweenOccupiedSpaces(HarbourSpace[] dock)
+        internal static (int harbourPosition, bool spaceFound) FindSingleSpaceBetweenOccupiedSpaces(DockSpace[] dock)
         {
             int selectedSpace = 0;
             bool spaceFound = false;
@@ -161,7 +161,7 @@ namespace HarbourWPF
             return (selectedSpace, spaceFound);
         }
 
-        internal static (int harbourPosition, bool spaceFound) FindFirstFreeSpace(HarbourSpace[] dock)
+        internal static (int harbourPosition, bool spaceFound) FindFirstFreeSpace(DockSpace[] dock)
         {
             int selectedSpace = 0;
             bool spaceFound = false;

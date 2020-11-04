@@ -11,33 +11,34 @@ namespace HarbourWPF
         public MotorBoat(string id, int weight, int maxSpeed, int daysStaying, int daysSinceArrival, int power)
             : base(weight, maxSpeed, daysStaying, daysSinceArrival)
         {
-            IdNumber = id;
             Type = "Motorbåt";
+            IdNumber = id;
             Power = power;
+        }
+
+        public static void CreateMotorBoat(List<Boat> boats)
+        {
+            string id = "M-" + GenerateID();
+            int weight = Utils.random.Next(200, 3000 + 1);
+            int maxSpeed = Utils.random.Next(1, 60 + 1);
+            int daysStaying = 3;
+            int daysSinceArrival = 0;
+            int power = Utils.random.Next(10, 1000 + 1);
+
+            boats.Add(new MotorBoat(id, weight, maxSpeed, daysStaying, daysSinceArrival, power));
         }
 
         public override string ToString()
         {
             return base.ToString() + $"\tMotoreffekt:\t{Power} hästkrafter";
         }
+
         public override string TextToFile(int index)
         {
             return base.TextToFile(index) + $"{Power}";
         }
 
-        public static void CreateMotorBoat(List<Boat> boats)
-        {
-            string id = "M-" + GenerateID();
-            int weight = Utils.r.Next(200, 3000 + 1);
-            int maxSpeed = Utils.r.Next(60 + 1);
-            int daysStaying = 3;
-            int daysSinceArrival = 0;
-            int power = Utils.r.Next(10, 1000 + 1);
-
-            boats.Add(new MotorBoat(id, weight, maxSpeed, daysStaying, daysSinceArrival, power));
-        }
-
-        internal static bool ParkMotorBoatInHarbour(Boat boat, HarbourSpace[] dock1, HarbourSpace[] dock2)
+        internal static bool ParkMotorBoatInHarbour(Boat boat, DockSpace[] dock1, DockSpace[] dock2)
         {
             bool boatParked;
 
