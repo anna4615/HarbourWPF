@@ -130,7 +130,6 @@ namespace HarbourWPF
                 selectedSpace = 0;
                 spaceFound = true;
             }
-
             // Annars, hitta ensam plats med upptagna platser runtom
             if (spaceFound == false)
             {
@@ -147,7 +146,6 @@ namespace HarbourWPF
                     spaceFound = true;
                 }
             }
-
             // Annars, om sista index är ledigt och index innan upptaget
             if (spaceFound == false)
             {

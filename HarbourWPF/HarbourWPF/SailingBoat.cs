@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace HarbourWPF
 {
@@ -16,6 +15,7 @@ namespace HarbourWPF
             IdNumber = id;
             Length = length;
         }
+
         public static void CreateSailingBoat(List<Boat> boats)
         {
             string id = "S-" + GenerateID();
@@ -96,7 +96,6 @@ namespace HarbourWPF
                 selectedSpace = 0;
                 spaceFound = true;
             }
-
             //Annars, hitta två lediga platser intill varandra med upptagna platser runtom
             if (spaceFound == false)
             {
@@ -113,17 +112,16 @@ namespace HarbourWPF
                     selectedSpace = q.SpaceId;
                     spaceFound = true;
                 }
-
-                // Annars, om två sista index är ledigt och index innan upptaget
-                if (spaceFound == false)
+            }
+            // Annars, om två sista index är ledigt och index innan upptaget
+            if (spaceFound == false)
+            {
+                if (dock[dock.Length - 2].ParkedBoats.Count == 0
+                    && dock[dock.Length - 1].ParkedBoats.Count == 0
+                    && dock[dock.Length - 3].ParkedBoats.Count > 0)
                 {
-                    if (dock[dock.Length - 2].ParkedBoats.Count == 0
-                        && dock[dock.Length - 1].ParkedBoats.Count == 0
-                        && dock[dock.Length - 3].ParkedBoats.Count > 0)
-                    {
-                        selectedSpace = dock.Length - 2;
-                        spaceFound = true;
-                    }
+                    selectedSpace = dock.Length - 2;
+                    spaceFound = true;
                 }
             }
 

@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace HarbourWPF
 {
@@ -108,7 +106,6 @@ namespace HarbourWPF
                 selectedSpace = 0;
                 spaceFound = true;
             }
-
             // Annars, hitta fyra lediga platser intill varandra med upptagna platser runtom
             if (spaceFound == false)
             {
@@ -127,19 +124,18 @@ namespace HarbourWPF
                     selectedSpace = q.SpaceId;
                     spaceFound = true;
                 }
-
-                // Annars, om fyra sista index är ledigt och index innan upptaget
-                if (spaceFound == false)
+            }
+            // Annars, om fyra sista index är ledigt och index innan upptaget
+            if (spaceFound == false)
+            {
+                if (dock[dock.Length - 4].ParkedBoats.Count == 0
+                    && dock[dock.Length - 3].ParkedBoats.Count == 0
+                    && dock[dock.Length - 2].ParkedBoats.Count == 0
+                    && dock[dock.Length - 1].ParkedBoats.Count == 0
+                    && dock[dock.Length - 5].ParkedBoats.Count > 0)
                 {
-                    if (dock[dock.Length - 4].ParkedBoats.Count == 0
-                        && dock[dock.Length - 3].ParkedBoats.Count == 0
-                        && dock[dock.Length - 2].ParkedBoats.Count == 0
-                        && dock[dock.Length - 1].ParkedBoats.Count == 0
-                        && dock[dock.Length - 5].ParkedBoats.Count > 0)
-                    {
-                        selectedSpace = dock.Length - 4;
-                        spaceFound = true;
-                    }
+                    selectedSpace = dock.Length - 4;
+                    spaceFound = true;
                 }
             }
 

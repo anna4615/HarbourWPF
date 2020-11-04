@@ -8,6 +8,16 @@ namespace HarbourWPF
     {
         public static Random random = new Random();
 
+        public static double ConvertKnotToKmPerHour(double knot)
+        {
+            return knot * 1.852;
+        }
+
+        public static double ConvertFeetToMeter(int feet)
+        {
+            return feet * 0.305;
+        }
+
         public static string PrintTextFromFile(IEnumerable<string> text)
         {
             string s = "Text från fil\n";
@@ -20,14 +30,5 @@ namespace HarbourWPF
             return s;
         }
 
-        public static double ConvertKnotToKmPerHour(double knot)
-        {
-            return knot * 1.852;
-        }
-
-        public static double ConvertFeetToMeter(int feet)
-        {
-            return feet * 0.305;
-        }
     }
 }
