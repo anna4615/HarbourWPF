@@ -145,7 +145,7 @@ namespace HarbourWPF
             int NumberOfArrivingBoats = 10;             // Det blir nästan aldrig fullt i hamnen om det kommer 5 båtar, ändrade till 10 för att vis att tabellen för avvisade båtar funkar
             AddNewBoats(arrivingBoats, NumberOfArrivingBoats);
 
-            foreach (var boat in arrivingBoats)
+            foreach (Boat boat in arrivingBoats)
             {
                 bool boatParked;
 
